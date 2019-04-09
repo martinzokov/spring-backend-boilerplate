@@ -1,8 +1,11 @@
-import App, {Container} from 'next/app'
-import React from 'react'
+import App, {Container} from 'next/app';
+import React from 'react';
+import {Header, Footer} from 'components/Layout';
+
+import Grid from '@material-ui/core/Grid';
 
 export default class MyApp extends App {
-  static async getInitialProps ({ Component, router, ctx }) {
+  static async getInitialProps ({ Component, ctx }) {
     let pageProps = {}
 
     if (Component.getInitialProps) {
@@ -13,9 +16,30 @@ export default class MyApp extends App {
   }
 
   render () {
-    const {Component, pageProps} = this.props
-    return <Container>
-      <Component {...pageProps} />
-    </Container>
+    const {Component, pageProps} = this.props;
+    
+    return <div>
+      <Grid container>
+        <Grid item xs={12}>
+          <Header/>
+        </Grid>
+        <Grid item xs={12}>
+            <Container>
+              <Component {...pageProps} />
+            </Container>
+        </Grid>
+        <Grid item xs={12}>
+          <Footer/>
+        </Grid>  
+      </Grid>
+      {/* <Layout>
+        <Header/>
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        <Footer/>
+      </Layout> */}
+
+    </div>
   }
 }
