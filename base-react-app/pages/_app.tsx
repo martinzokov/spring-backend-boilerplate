@@ -1,6 +1,6 @@
 import App, {Container} from 'next/app';
 import React from 'react';
-import {Header, Footer} from 'components/Layout';
+import {Header, Footer} from '../components/Layout';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -32,14 +32,6 @@ export default class MyApp extends App {
           <Footer/>
         </Grid>  
       </Grid>
-      {/* <Layout>
-        <Header/>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-        <Footer/>
-      </Layout> */}
-
     </div>
   }
 }
