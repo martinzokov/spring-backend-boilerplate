@@ -18,7 +18,7 @@ export default class MyApp extends App {
   render () {
     const {Component, pageProps} = this.props;
     
-    return <div>
+    return <React.Fragment>
       <Grid container>
         <Grid item xs={12}>
           <Header/>
@@ -32,6 +32,6 @@ export default class MyApp extends App {
           <Footer/>
         </Grid>  
       </Grid>
-    </div>
+    </React.Fragment>
   }
 }
