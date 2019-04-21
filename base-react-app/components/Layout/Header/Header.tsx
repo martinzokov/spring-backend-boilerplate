@@ -3,30 +3,63 @@ import React from "react";
 import * as style from "./Header.scss";
 import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 import AssignmentIcon from "@material-ui/icons/Assignment";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuItem from "./MenuItems";
+
 import {
   Grid,
   AppBar,
   Toolbar,
   Button,
   Avatar,
-  Typography
+  Typography,
+  Hidden,
+  Drawer,
+  IconButton,
+  SwipeableDrawer
 } from "@material-ui/core";
+
+const MenuItems = [new MenuItem("Home", "/"), new MenuItem("About", "/about")];
 
 export class Header extends React.Component<any, any> {
   state = {
-    value: 0,
-    menuDrawer: false
+    drawerOpen: false
+  };
+
+  handleDrawerToggle = () => {
+    this.setState(current => ({ ...current, drawerOpen: !current.drawerOpen }));
+  };
+
+  buildHeaderLinks = () => {
+    return MenuItems.map(item => (
+      <Button disableRipple>
+        <Link href={item.path}>
+          <div>{item.label}</div>
+        </Link>
+      </Button>
+    ));
+  };
+
+  buildDrawerLinks = () => {
+    return MenuItems.map(item => (
+      <div onClick={this.handleDrawerToggle}>
+        <Button disableRipple>
+          <Link href={item.path}>
+            <div>{item.label}</div>
+          </Link>
+        </Button>
+      </div>
+    ));
   };
 
   render() {
     const { classes } = this.props;
-    const { value } = this.state;
     return (
       <AppBar position="absolute" color="default">
         <Toolbar>
           <Grid container spacing={24} direction="row" justify="center">
-            <Grid item sm={3}>
-              <Grid container>
+            <Grid item xs={10} md={6} lg={3}>
+              <Grid container spacing={8} alignItems="center">
                 <Grid item>
                   <Avatar>
                     <AssignmentIcon />
@@ -40,26 +73,32 @@ export class Header extends React.Component<any, any> {
               </Grid>
             </Grid>
 
-            <Grid item sm={3}>
-              <Grid container justify="flex-end">
-                <Grid item>
-                  <Button disableRipple>
-                    <Link href="/">
-                      <div>Home</div>
-                    </Link>
-                  </Button>
-                  <Button disableRipple>
-                    <Link href="/about">
-                      <div>About</div>
-                    </Link>
-                  </Button>
+            <Grid item xs={2} md={6} lg={3}>
+              <Hidden smDown>
+                <Grid container alignItems="center" justify="flex-end">
+                  <Grid item>{this.buildHeaderLinks()}</Grid>
+                  <Grid item>
+                    <Avatar>
+                      <PermIdentityIcon />
+                    </Avatar>
+                  </Grid>
                 </Grid>
+              </Hidden>
+              <Hidden mdUp>
                 <Grid item>
-                  <Avatar>
-                    <PermIdentityIcon />
-                  </Avatar>
+                  <IconButton onClick={this.handleDrawerToggle}>
+                    <MenuIcon />
+                  </IconButton>
                 </Grid>
-              </Grid>
+                <SwipeableDrawer
+                  anchor="right"
+                  open={this.state.drawerOpen}
+                  onClose={this.handleDrawerToggle}
+                  onOpen={this.handleDrawerToggle}
+                >
+                  {this.buildDrawerLinks()}
+                </SwipeableDrawer>
+              </Hidden>
             </Grid>
           </Grid>
         </Toolbar>
