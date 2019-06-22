@@ -1,8 +1,12 @@
 package com.example.springsocial.security.oauth2;
 
+import com.example.springsocial.enums.auth.RoleTypes;
+import com.example.springsocial.exception.BadRequestException;
 import com.example.springsocial.exception.OAuth2AuthenticationProcessingException;
 import com.example.springsocial.model.AuthProvider;
+import com.example.springsocial.model.Role;
 import com.example.springsocial.model.User;
+import com.example.springsocial.repository.RoleRepository;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.UserPrincipal;
 import com.example.springsocial.security.oauth2.user.OAuth2UserInfo;
@@ -24,6 +28,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -70,10 +76,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        Optional<Role> role = roleRepository.findById(RoleTypes.USER.name());
+        if(!role.isPresent()){
+            throw new BadRequestException("Could not create user");
+        }
+        user.getRoles().add(role.get());
         return userRepository.save(user);
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+
         existingUser.setName(oAuth2UserInfo.getName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
