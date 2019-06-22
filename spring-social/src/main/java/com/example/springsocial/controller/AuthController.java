@@ -12,8 +12,10 @@ import com.example.springsocial.payload.SignUpRequest;
 import com.example.springsocial.repository.RoleRepository;
 import com.example.springsocial.repository.UserRepository;
 import com.example.springsocial.security.TokenProvider;
+import com.example.springsocial.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -91,4 +93,9 @@ public class AuthController {
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
 
+    @PostMapping("/ping")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity ping() {
+        return ResponseEntity.ok(new ApiResponse(true, "User Authenticated"));
+    }
 }
