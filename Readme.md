@@ -1,6 +1,11 @@
-# Spring Boot React OAuth2 Social Login Demo
+# Spring Boot OAuth2 Social Login Boilerplate
 
-![App Screenshot](screenshot.png)
+This was originally forked from [callicoder's repo here](https://github.com/callicoder/spring-boot-react-oauth2-social-login-demo)
+
+Changes to the original:
++ Added support for multiple role types
++ A /auth/ping endpoint that is allowed only for Users
++ Removed the frontend and replaced it with one of my own - [found here](https://github.com/martinzokov/react-boilerplate)
 
 ## Setting up the Backend Server (spring-social)
 
@@ -67,10 +72,3 @@
 	```bash
 	mvn spring-boot:run
 	```
-
-## Setting up the Frontend Server (react-social)
-
-```bash
-cd react-social
-npm install && npm start
-```
