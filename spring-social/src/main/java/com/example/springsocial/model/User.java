@@ -40,6 +40,9 @@ public class User {
 
     private String providerId;
 
-    @OneToMany
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") })
     private final List<Role> roles = new ArrayList<>();
 }
